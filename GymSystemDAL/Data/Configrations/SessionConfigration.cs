@@ -20,6 +20,22 @@ namespace GymSystemDAL.Data.Configrations
                 Tb.HasCheckConstraint("SessionEndDateCheck", "EndDate > StratDate");
 
             });
+            #region 1:M RS Between SessionCategory
+
+            //1:M RS Between SessionCategory
+            builder.HasOne(X=>X.SessionCategory).
+                WithMany(C => C.Sessions).
+                HasForeignKey(S => S.CategoryId);
+
+            #endregion
+
+            #region 1:M RS Between SessionTrainer
+
+            builder.HasOne(X => X.SessionTrainer).
+                WithMany(T => T.TrainerSessions).
+                HasForeignKey(S => S.TrainerId);
+
+            #endregion
 
         }
     }

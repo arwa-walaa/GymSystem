@@ -12,5 +12,11 @@ namespace GymSystemDAL.Entities
       
         public Specialist Specialites { get; set; }
 
+        #region 1:M RS Between SessionTrainer
+
+        public  ICollection<Session> TrainerSessions { get; set; }
+
+        #endregion
+
     }
 }

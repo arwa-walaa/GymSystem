@@ -8,7 +8,24 @@ namespace GymSystemDAL.Entities
 {
     internal class Member : GymUser
     {
-      public string? Photo { get; set; } 
+      public string? Photo { get; set; }
+
+        #region 1:1 RS Between Member HealthRecord
+
+        public HealthRecord HealthRecord { get; set; }
+        #endregion
+
+        #region M:N RS Between MemberPlan
+
+        public ICollection<Membership> Memberships { get; set; }
+
+        #endregion
+
+        #region M:N RS Between MemberSession
+
+        public ICollection<MemberSession> MemberSessions { get; set; }
+
+        #endregion
 
 
     }

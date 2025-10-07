@@ -16,5 +16,11 @@ namespace GymSystemDAL.Entities
 
         public bool IsActive { get; set; }
 
+        #region M:N RS Between MemberPlan
+
+        public ICollection<Membership> Plans { get; set; }
+
+        #endregion
+
     }
 }
