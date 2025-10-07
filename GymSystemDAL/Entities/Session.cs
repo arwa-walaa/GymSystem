@@ -11,6 +11,6 @@ namespace GymSystemDAL.Entities
         public string Description { get; set; } = null!;
         public int Capacity { get; set; }
         public DateTime StratDate { get; set; }
-        public DateTime EndtDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

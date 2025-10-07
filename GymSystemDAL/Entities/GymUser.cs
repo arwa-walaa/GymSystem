@@ -18,6 +18,8 @@ namespace GymSystemDAL.Entities
 
         public Gender Gender { get; set; }
 
+        public Address Address { get; set; } = null!;
+
     }
     [Owned]
     class Address
