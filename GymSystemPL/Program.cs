@@ -20,6 +20,9 @@ namespace GymSystemPL
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            //Generic Repo
+            builder.Services.AddScoped(typeof(GymSystemDAL.Repositroies.Interfaces.IGenericRepo<>), typeof(GymSystemDAL.Repositroies.Classes.GenericRepo<>));
+
             #endregion
 
             var app = builder.Build();
