@@ -36,10 +36,16 @@ namespace GymSystemDAL.Repositroies.Classes
             return _dBContext.SaveChanges();
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condtion = null)
         {
-            
-            return _dBContext.Set<TEntity>().ToList();
+            if (condtion is not null)
+            {
+                return _dBContext.Set<TEntity>().Where(condtion).ToList();
+            }
+            else
+            { 
+                return _dBContext.Set<TEntity>().ToList();
+            }
         }
 
         public TEntity? GetById(int id)

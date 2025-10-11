@@ -17,14 +17,50 @@ namespace GymSystemBLL.Services.Clasess
         {
             _memberRepo = memberRepo;
         }
-        public int AddMember(MemberViewModel member)
-        {
-            throw new NotImplementedException();
-        }
 
-        public int DeleteMember(int id)
+        public bool CreateMember(CreateMemberViewModel createMemberViewModel)
         {
-            throw new NotImplementedException();
+            //check if phone or email are uniqe
+            try
+            {
+                var EmailExist = _memberRepo.GetAll(m => m.Email == createMemberViewModel.Email).Any();
+                var PhoneExist = _memberRepo.GetAll(m => m.Phone == createMemberViewModel.Phone).Any();
+                if (EmailExist || PhoneExist)
+                {
+                    return false;
+                }
+
+                var member = new Member()
+                {
+                    Name = createMemberViewModel.Name,
+                    Email = createMemberViewModel.Email,
+                    Phone = createMemberViewModel.Phone,
+                    DateOfBirth = createMemberViewModel.DateOfBirth,
+                    Gender = createMemberViewModel.Gender,
+                    Address = new Address()
+                    {
+                        BuildingNumber = createMemberViewModel.BuildingNumber,
+                        Street = createMemberViewModel.Street,
+                        City = createMemberViewModel.City,
+                    },
+                    HealthRecord = new HealthRecord()
+                    {
+                        Weight = createMemberViewModel.HealthViewModel.Weight,
+                        Height = createMemberViewModel.HealthViewModel.Height,
+                        BloodType = createMemberViewModel.HealthViewModel.BloodType,
+                        Note = createMemberViewModel.HealthViewModel.Note,
+
+                    }
+
+                };
+
+               return _memberRepo.Add(member) >0;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
         public IEnumerable<MemberViewModel> GetAllMembers()
@@ -69,14 +105,7 @@ namespace GymSystemBLL.Services.Clasess
             return memberViewModels;
         }
 
-        public MemberViewModel? GetMemberById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int UpdateMember(MemberViewModel member)
-        {
-            throw new NotImplementedException();
-        }
+     
+       
     }
 }
