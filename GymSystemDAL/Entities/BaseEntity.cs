@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Entities
 {
-    internal class BaseEntity
+    public class BaseEntity
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }

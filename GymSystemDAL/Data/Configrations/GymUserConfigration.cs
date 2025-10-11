@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Data.Configrations
 {
-    internal class GymUserConfigration<T> : IEntityTypeConfiguration<T> where T : GymUser
+    public class GymUserConfigration<T> : IEntityTypeConfiguration<T> where T : GymUser
     {
         public void Configure(EntityTypeBuilder<T> builder)
         {

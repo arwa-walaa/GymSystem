@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Entities
 {
-    internal class Membership : BaseEntity
+    public class Membership : BaseEntity
     {
       
        

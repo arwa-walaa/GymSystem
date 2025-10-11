@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Data.Configrations
 {
-    internal class MamberSessionConfigration : IEntityTypeConfiguration<Entities.MemberSession>
+    public class MamberSessionConfigration : IEntityTypeConfiguration<Entities.MemberSession>
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Entities.MemberSession> builder)
         {

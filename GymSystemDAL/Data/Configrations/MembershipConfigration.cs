@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Data.Configrations
 {
-    internal class MembershipConfigration : IEntityTypeConfiguration<Entities.Membership>
+    public class MembershipConfigration : IEntityTypeConfiguration<Entities.Membership>
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Entities.Membership> builder)
         {

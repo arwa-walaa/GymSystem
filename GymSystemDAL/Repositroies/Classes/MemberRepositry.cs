@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Repositroies.Classes
 {
-    internal class MemberRepositry : Interfaces.IMemberReposatiry
+    public class MemberRepositry : Interfaces.IMemberReposatiry
     {
-        private readonly GymSystemDBContext _dbContext= new GymSystemDBContext();
+        private readonly GymSystemDBContext _dbContext;
+
+        //private readonly GymSystemDBContext _dbContext= new GymSystemDBContext();
+
+        public MemberRepositry(GymSystemDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public int Add(Member member)
         {
            _dbContext.Members.Add(member);

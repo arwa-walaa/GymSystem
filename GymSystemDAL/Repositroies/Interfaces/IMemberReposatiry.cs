@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Repositroies.Interfaces
 {
-    internal interface IMemberReposatiry
+    public interface IMemberReposatiry
     {
         IEnumerable<Entities.Member> GetAll();
 

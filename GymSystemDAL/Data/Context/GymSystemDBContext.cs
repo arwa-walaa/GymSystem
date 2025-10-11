@@ -8,19 +8,22 @@ using System.Threading.Tasks;
 
 namespace GymSystemDAL.Data.Context
 {
-    internal class GymSystemDBContext : DbContext
+    public class GymSystemDBContext : DbContext
     {
-        //public GymSystemDBContext(DbContextOptions<GymSystemDBContext> options) : base(options)
-        //{
-        //}
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public GymSystemDBContext(DbContextOptions<GymSystemDBContext> options) : base(options)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Data Source=ARWA\\SQLEXPRESS01;Initial Catalog=GymSystem;Integrated Security=True; TrustServerCertificate=true");
-            }
+            
         }
+
+       
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("Data Source=ARWA\\SQLEXPRESS01;Initial Catalog=GymSystem;Integrated Security=True; TrustServerCertificate=true");
+        //    }
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
