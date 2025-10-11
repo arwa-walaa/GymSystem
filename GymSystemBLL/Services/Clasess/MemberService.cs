@@ -14,14 +14,17 @@ namespace GymSystemBLL.Services.Clasess
         private readonly IGenericRepo<Member> _memberRepo;
         private readonly IGenericRepo<Membership> _membershipRepo;
         private readonly IPlanRepo _planRepo;
+        private readonly IGenericRepo<HealthRecord> _healthRecordRepo;
 
         public MemberService( IGenericRepo<Member>  memberRepo,
            IGenericRepo<Membership> membershipRepo,
-           IPlanRepo planRepo)
+           IPlanRepo planRepo,
+           IGenericRepo<HealthRecord> healthRecordRepo)
         {
             _memberRepo = memberRepo;
             _membershipRepo = membershipRepo;
             _planRepo = planRepo;
+            _healthRecordRepo = healthRecordRepo;
         }
 
         public bool CreateMember(CreateMemberViewModel createMemberViewModel)
@@ -144,6 +147,24 @@ namespace GymSystemBLL.Services.Clasess
             }
 
             return viewModel;
+
+        }
+
+    
+
+        public HealthViewModel? GetMemberRecordHealth(int MamberId)
+        {
+            var MemeberHealthRecord = _healthRecordRepo.GetById(MamberId);
+            if (MemeberHealthRecord is null) return null;
+            var healthViewModel = new HealthViewModel()
+            {
+                Weight = MemeberHealthRecord.Weight,
+                Height = MemeberHealthRecord.Height,
+                BloodType = MemeberHealthRecord.BloodType,
+                Note = MemeberHealthRecord.Note,
+            };
+            return healthViewModel;
+
 
         }
     }
