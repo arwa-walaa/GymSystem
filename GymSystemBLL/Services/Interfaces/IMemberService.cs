@@ -27,5 +27,7 @@ namespace GymSystemBLL.Services.Interfaces
 
         bool UpdateMemberDetails(int memberId, MamberToUpdateViewModel mamberToUpdateViewModel);
 
+        bool DeleteMember(int id);
+
     }
 }

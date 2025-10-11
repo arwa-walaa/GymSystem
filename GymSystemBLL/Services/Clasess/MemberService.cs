@@ -15,16 +15,20 @@ namespace GymSystemBLL.Services.Clasess
         private readonly IGenericRepo<Membership> _membershipRepo;
         private readonly IPlanRepo _planRepo;
         private readonly IGenericRepo<HealthRecord> _healthRecordRepo;
+        private readonly IGenericRepo<MemberSession> _memberSessionRepo;
 
         public MemberService( IGenericRepo<Member>  memberRepo,
            IGenericRepo<Membership> membershipRepo,
            IPlanRepo planRepo,
-           IGenericRepo<HealthRecord> healthRecordRepo)
+           IGenericRepo<HealthRecord> healthRecordRepo,
+            IGenericRepo<MemberSession> memberSessionRepo
+           )
         {
             _memberRepo = memberRepo;
             _membershipRepo = membershipRepo;
             _planRepo = planRepo;
             _healthRecordRepo = healthRecordRepo;
+            _memberSessionRepo = memberSessionRepo;
         }
 
         public bool CreateMember(CreateMemberViewModel createMemberViewModel)
@@ -212,6 +216,40 @@ namespace GymSystemBLL.Services.Clasess
 
         }
 
+        public bool DeleteMember(int id)
+        {
+            var memeber = _memberRepo.GetById(id);
+            if (memeber is null) return false;
+            var HasActiveMemberSession = _memberSessionRepo.GetAll(m=>m.MemberId == id && m.Session.StratDate> DateTime.Now ).Any();
+            if (HasActiveMemberSession) return false;
+            var Membership = _membershipRepo.GetAll(m => m.MemberId == id);
+            //remove
+
+            try
+            {
+                if (Membership.Any())
+                {
+                    foreach (var item in Membership)
+                    {
+                        _membershipRepo.Delete(item.Id);
+
+                    }
+
+                }
+             
+                return _memberRepo.Delete(id) > 0;
+
+
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+
+        }
+
         #region Helper
 
         private bool IsEmailExist(string email)
@@ -222,6 +260,8 @@ namespace GymSystemBLL.Services.Clasess
         {
             return _memberRepo.GetAll(m => m.Phone == phone).Any();
         }
+
+    
 
         #endregion
     }
