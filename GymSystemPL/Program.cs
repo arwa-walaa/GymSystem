@@ -22,7 +22,7 @@ namespace GymSystemPL
 
             //Generic Repo
             builder.Services.AddScoped(typeof(GymSystemDAL.Repositroies.Interfaces.IGenericRepo<>), typeof(GymSystemDAL.Repositroies.Classes.GenericRepo<>));
-
+            builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.IPlanRepo, GymSystemDAL.Repositroies.Classes.PlanRepo>();
             #endregion
 
             var app = builder.Build();

@@ -12,10 +12,16 @@ namespace GymSystemBLL.Services.Clasess
     internal class MemberService : Interfaces.IMemberService
     {
         private readonly IGenericRepo<Member> _memberRepo;
+        private readonly IGenericRepo<Membership> _membershipRepo;
+        private readonly IPlanRepo _planRepo;
 
-        public MemberService( IGenericRepo<Member>  memberRepo)
+        public MemberService( IGenericRepo<Member>  memberRepo,
+           IGenericRepo<Membership> membershipRepo,
+           IPlanRepo planRepo)
         {
             _memberRepo = memberRepo;
+            _membershipRepo = membershipRepo;
+            _planRepo = planRepo;
         }
 
         public bool CreateMember(CreateMemberViewModel createMemberViewModel)
@@ -105,7 +111,40 @@ namespace GymSystemBLL.Services.Clasess
             return memberViewModels;
         }
 
-     
-       
+        public MemberViewModel? GetMemberDetails(int id)
+        {
+           //Iplan repo
+
+            var member = _memberRepo.GetById(id);
+            if (member is null) return null;
+            var viewModel = new MemberViewModel()
+            {
+                Id = member.Id,
+                Name = member.Name,
+                Phone = member.Phone,
+                Email = member.Email,
+                Gender = member.Gender.ToString(),
+                Photo = member.Photo,
+                DateOfBirth = member.DateOfBirth.ToShortDateString(),
+                Address = $"{member.Address?.BuildingNumber} - {member.Address?.Street} - {member.Address?.City}",
+
+
+            };  
+            var activeMembership = _membershipRepo
+                .GetAll(m => m.MemberId == id && m.Status=="Active")
+                .FirstOrDefault();
+            if (activeMembership is not null)
+            {
+                
+                viewModel.MembershipStartDate = activeMembership.CreatedAt.ToShortDateString();
+                viewModel.MembershipEndDate = activeMembership.EndDate.ToShortDateString();
+
+                var plan = _planRepo.GetById(activeMembership.PlanId);
+                viewModel.PlanName = plan?.Name;
+            }
+
+            return viewModel;
+
+        }
     }
 }
