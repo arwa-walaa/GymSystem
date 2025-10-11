@@ -32,9 +32,7 @@ namespace GymSystemBLL.Services.Clasess
             //check if phone or email are uniqe
             try
             {
-                var EmailExist = _memberRepo.GetAll(m => m.Email == createMemberViewModel.Email).Any();
-                var PhoneExist = _memberRepo.GetAll(m => m.Phone == createMemberViewModel.Phone).Any();
-                if (EmailExist || PhoneExist)
+                if (IsEmailExist(createMemberViewModel.Email) || IsPhoneExist(createMemberViewModel.Phone))
                 {
                     return false;
                 }
@@ -150,7 +148,7 @@ namespace GymSystemBLL.Services.Clasess
 
         }
 
-    
+     
 
         public HealthViewModel? GetMemberRecordHealth(int MamberId)
         {
@@ -167,5 +165,64 @@ namespace GymSystemBLL.Services.Clasess
 
 
         }
+
+        public bool UpdateMemberDetails(int memberId, MamberToUpdateViewModel mamberToUpdateViewModel)
+        {
+
+            try
+            {
+                if (IsEmailExist(mamberToUpdateViewModel.Email) || IsPhoneExist(mamberToUpdateViewModel.Phone))
+                {
+                    return false;
+                }
+                var member = _memberRepo.GetById(memberId);
+                if (member is null) return false;
+
+                member.Email = mamberToUpdateViewModel.Email;
+                member.Phone = mamberToUpdateViewModel.Phone;
+                member.Photo = mamberToUpdateViewModel.Photo;
+                member.Address.BuildingNumber = mamberToUpdateViewModel.BuildingNumber;
+                member.Address.Street = mamberToUpdateViewModel.Street;
+                member.Address.City = mamberToUpdateViewModel.City;
+                member.UpdatedAt = DateTime.Now;
+                return _memberRepo.Update(member) > 0;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+        }
+
+        public MamberToUpdateViewModel? GetMemberForUpdate(int memebrId)
+        {
+            var memeber = _memberRepo.GetById(memebrId);
+            if(memeber is null) return null;
+            return new MamberToUpdateViewModel
+            {
+                Name = memeber.Name,
+                Photo = memeber.Photo,
+                Email = memeber.Email,
+                Phone = memeber.Phone,
+                BuildingNumber = memeber.Address.BuildingNumber,
+                Street = memeber.Address.Street,
+                City = memeber.Address.City,
+            };
+
+        }
+
+        #region Helper
+
+        private bool IsEmailExist(string email)
+        {
+            return _memberRepo.GetAll(m => m.Email == email).Any();
+        }
+        private bool IsPhoneExist(string phone)
+        {
+            return _memberRepo.GetAll(m => m.Phone == phone).Any();
+        }
+
+        #endregion
     }
 }
