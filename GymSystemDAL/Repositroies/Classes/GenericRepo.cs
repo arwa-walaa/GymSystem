@@ -15,25 +15,20 @@ namespace GymSystemDAL.Repositroies.Classes
         public GenericRepo(GymSystemDBContext dBContext) {
            _dBContext = dBContext;
         }
-        public int Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             _dBContext.Set<TEntity>().Add(entity);
-            return _dBContext.SaveChanges();
-
+           
 
 
         }
 
-        public int Delete(int id)
+        public void Delete(TEntity entity)
         {
            
-            var entity = _dBContext.Set<TEntity>().Find(id);
-            if (entity is null)
-            {
-                return 0;
-            }
+         
             _dBContext.Set<TEntity>().Remove(entity);
-            return _dBContext.SaveChanges();
+          
         }
 
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condtion = null)
@@ -54,11 +49,11 @@ namespace GymSystemDAL.Repositroies.Classes
             return _dBContext.Set<TEntity>().Find(id);
         }
 
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
            
             _dBContext.Set<TEntity>().Update(entity);
-            return _dBContext.SaveChanges();
+          
         }
 
       
