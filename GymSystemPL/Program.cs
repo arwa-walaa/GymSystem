@@ -1,3 +1,4 @@
+using GymSystemDAL.Data.DataSeed;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymSystemPL
@@ -27,6 +28,20 @@ namespace GymSystemPL
             #endregion
 
             var app = builder.Build();
+
+            #region Data Seed
+
+            var Scope = app.Services.CreateScope();
+            var DbContext = Scope.ServiceProvider.GetRequiredService<GymSystemDAL.Data.Context.GymSystemDBContext>();
+            //check if there is migration pending 
+            var PendingMigrations = DbContext.Database.GetPendingMigrations();
+            if (PendingMigrations?.Any() ?? false)
+            {
+                DbContext.Database.Migrate();
+            }
+            GymDBContextSeeding.SeedData(DbContext);
+
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
