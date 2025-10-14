@@ -68,6 +68,27 @@ namespace GymSystemBLL.Services.Clasess
         
         }
 
+        public bool ToggleStatus(int PlanId)
+        {
+
+
+            var plan = _unitOfWork.GetRepo<Plan>().GetById(PlanId);
+            //Check Active Memberships with this Plan
+            if (plan is null || HasActiveMemberShip(PlanId)) return false;
+            try
+            {
+              
+                plan.IsActive = plan.IsActive==true ? false : true;
+                plan.UpdatedAt=DateTime.Now;
+                _unitOfWork.GetRepo<Plan>().Update(plan);
+                return _unitOfWork.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public bool UpdatePlan(int planId, UpdatePlanViewModel updatedPlan)
         {
             var plan = _unitOfWork.GetRepo<GymSystemDAL.Entities.Plan>().GetById(planId);
