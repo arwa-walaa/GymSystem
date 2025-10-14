@@ -1,9 +1,11 @@
-﻿using GymSystemBLL.ViewModels.PlanViewModel;
+﻿using GymSystemBLL.ViewModels;
+using GymSystemBLL.ViewModels.PlanViewModel;
 using GymSystemDAL.Entities;
 using GymSystemDAL.Repositroies.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,5 +52,48 @@ namespace GymSystemBLL.Services.Clasess
                 IsActive = plan.IsActive,
             };
         }
+
+        public UpdatePlanViewModel? GetPlanToUpdate(int planId)
+        {
+            var plan = _unitOfWork.GetRepo<GymSystemDAL.Entities.Plan>().GetById(planId);
+            if (plan is null || plan.IsActive==false || HasActiveMemberShip(planId) ) return null;
+            return new UpdatePlanViewModel()
+            {
+                PlanName = plan.Name,
+                Description = plan.Description,
+                Price = plan.Price,
+                DurationDays = plan.DurationDays,
+
+            };
+        
+        }
+
+        public bool UpdatePlan(int planId, UpdatePlanViewModel updatedPlan)
+        {
+            var plan = _unitOfWork.GetRepo<GymSystemDAL.Entities.Plan>().GetById(planId);
+            if (plan is null || HasActiveMemberShip(planId)) return false;
+            try
+            {
+                (plan.Name, plan.Description, plan.Price, plan.DurationDays) =
+         (updatedPlan.PlanName, updatedPlan.Description, updatedPlan.Price, updatedPlan.DurationDays);
+                _unitOfWork.GetRepo<Plan>().Update(plan);
+                return _unitOfWork.SaveChanges()>0;
+            }
+            catch (Exception) {
+            
+                return false;
+            }
+        }
+
+        #region Helper
+
+        private bool HasActiveMemberShip(int PlanId)
+        {
+            var ActiveMembership= _unitOfWork.GetRepo<GymSystemDAL.Entities.Membership>().GetAll(P=>P.PlanId == PlanId && P.Status=="Active" );
+            return ActiveMembership.Any();
+        }
+
+
+        #endregion
     }
 }
