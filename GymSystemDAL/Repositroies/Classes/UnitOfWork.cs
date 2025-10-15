@@ -14,10 +14,15 @@ namespace GymSystemDAL.Repositroies.Classes
         private readonly GymSystemDBContext _dbContext;
         private readonly Dictionary<Type, object> _repositories = new Dictionary<Type, object>();
 
-        public UnitOfWork(GymSystemDBContext dbContext )
+        public UnitOfWork(GymSystemDBContext dbContext  , ISessionRepo sessionRepo)
         {
             _dbContext = dbContext;
+            SessionRepo= sessionRepo;
+
         }
+
+        public ISessionRepo SessionRepo { get; }
+
         public IGenericRepo<TEntity> GetRepo<TEntity>() where TEntity : BaseEntity, new()
         {
            var EntityType= typeof(TEntity);

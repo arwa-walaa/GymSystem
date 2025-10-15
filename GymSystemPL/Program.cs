@@ -25,6 +25,7 @@ namespace GymSystemPL
             builder.Services.AddScoped(typeof(GymSystemDAL.Repositroies.Interfaces.IGenericRepo<>), typeof(GymSystemDAL.Repositroies.Classes.GenericRepo<>));
             builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.IPlanRepo, GymSystemDAL.Repositroies.Classes.PlanRepo>();
             builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.IUnitOfWork, GymSystemDAL.Repositroies.Classes.UnitOfWork>();
+            builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.ISessionRepo, GymSystemDAL.Repositroies.Classes.SessionRepo>();
             #endregion
 
             var app = builder.Build();
