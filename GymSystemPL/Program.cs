@@ -1,3 +1,4 @@
+using GymSystemBLL;
 using GymSystemDAL.Data.DataSeed;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,7 @@ namespace GymSystemPL
             builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.IPlanRepo, GymSystemDAL.Repositroies.Classes.PlanRepo>();
             builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.IUnitOfWork, GymSystemDAL.Repositroies.Classes.UnitOfWork>();
             builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.ISessionRepo, GymSystemDAL.Repositroies.Classes.SessionRepo>();
+            builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfiles()));
             #endregion
 
             var app = builder.Build();

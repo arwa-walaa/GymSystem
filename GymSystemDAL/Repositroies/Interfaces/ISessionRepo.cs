@@ -13,6 +13,8 @@ namespace GymSystemDAL.Repositroies.Interfaces
 
         int GetCountOfBookedSlots(int sessionID);
 
+        Session? GetSessionWithTrainerAndCategoryByID(int sessionID);
+
 
     }
 }
