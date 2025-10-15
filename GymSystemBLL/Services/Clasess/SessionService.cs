@@ -128,6 +128,23 @@ namespace GymSystemBLL.Services.Clasess
             }
 
         }
+
+        public bool RemoveSession(int sessionId)
+        {
+            try
+            {
+                var session = _unitOfWork.SessionRepo.GetById(sessionId);
+                if (session == null) return false;
+                if (!IsSessionAvailableForDelete(session!)) return false;
+                _unitOfWork.SessionRepo.Delete(session);
+                return _unitOfWork.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
         #region Helper
 
         private bool IsTrainerExist(int trainerId)
@@ -156,6 +173,18 @@ namespace GymSystemBLL.Services.Clasess
 
 
         }
+
+        private bool IsSessionAvailableForDelete(Session session)
+        {
+            if (session is null) return false;
+            var hasActiveBookings = _unitOfWork.SessionRepo.GetCountOfBookedSlots(session.Id) > 0;
+            //if session completed or started or has active bookings
+            if ((session.EndDate < DateTime.Now && session.StratDate > DateTime.Now) || session.StratDate > DateTime.Now || session.EndDate < DateTime.Now || hasActiveBookings) return false;
+            return true;
+
+
+        }
+
 
         #endregion
     }
