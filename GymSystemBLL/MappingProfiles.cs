@@ -25,6 +25,10 @@ namespace GymSystemBLL
                 opt => opt.Ignore());
 
             CreateMap<GymSystemBLL.ViewModels.SessionsViewModel.CreateSessionViewModel, GymSystemDAL.Entities.Session>();
+            CreateMap<GymSystemBLL.ViewModels.SessionsViewModel.UpdateSessionViewModel, GymSystemDAL.Entities.Session>().ReverseMap();
+
+
+
 
         }
     }

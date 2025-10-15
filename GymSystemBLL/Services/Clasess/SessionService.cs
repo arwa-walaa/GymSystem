@@ -95,6 +95,39 @@ namespace GymSystemBLL.Services.Clasess
 
         }
 
+        public UpdateSessionViewModel? GetSessionToUpdate(int sessionId)
+        {
+            
+            var session = _unitOfWork.SessionRepo.GetById(sessionId);
+            if (session == null) return null;
+            if (!IsSessionAvailableForUpdate(session!)) return null;
+            var MappedSession = _mapper.Map<UpdateSessionViewModel>(session);
+            return MappedSession;
+
+        }
+
+        public bool UpdateSession(int sessionId, UpdateSessionViewModel updateSessionViewModel)
+        {
+            try
+            {
+                var session = _unitOfWork.SessionRepo.GetById(sessionId);
+                if (session == null) return false;
+                if (!IsSessionAvailableForUpdate(session!)) return false;
+                if (!IsTrainerExist(updateSessionViewModel.TrainerId) || !IsDateValid(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate))
+                {
+                    return false;
+                }
+                _mapper.Map(updateSessionViewModel, session);
+                session.UpdatedAt = DateTime.Now;
+                _unitOfWork.GetRepo<Session>().Update(session);
+                return _unitOfWork.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
         #region Helper
 
         private bool IsTrainerExist(int trainerId)
@@ -112,6 +145,18 @@ namespace GymSystemBLL.Services.Clasess
         {
             return startDate < endDate ;
         }
+
+        private bool IsSessionAvailableForUpdate(Session session)
+        {
+           if(session is null) return false;
+            var hasActiveBookings = _unitOfWork.SessionRepo.GetCountOfBookedSlots(session.Id) > 0;
+            //if session completed or started or has active bookings
+            if (session.EndDate < DateTime.Now || session.StratDate < DateTime.Now || hasActiveBookings) return false;
+            return true;
+
+
+        }
+
         #endregion
     }
 }
