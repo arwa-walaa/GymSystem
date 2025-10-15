@@ -21,6 +21,39 @@ namespace GymSystemBLL.Services.Clasess
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+        public bool CreateSession(CreateSessionViewModel createSessionViewModel)
+        {
+            try
+            {
+                //check if the tranier and category exist
+                //check if the start date is before end date
+                if (!IsTrainerExist(createSessionViewModel.TrainerId) || !IsCategoryExist(createSessionViewModel.CategoryId) || !IsDateValid(createSessionViewModel.StartDate, createSessionViewModel.EndDate))
+                {
+                    return false;
+                }
+                if (createSessionViewModel.Capacity < 0 || createSessionViewModel.Capacity > 25)
+                {
+                    return false;
+                }
+                var session = _mapper.Map< Session>(createSessionViewModel);
+                _unitOfWork.GetRepo<Session>().Add(session);
+                return _unitOfWork.SaveChanges() > 0;
+
+                //var session = _mapper.Map<CreateSessionViewModel, Session>(createSessionViewModel);
+
+
+
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+
+        }
+
         public IEnumerable<SessionViewModel> GetAllSessions()
         {
             var sessions = _unitOfWork.SessionRepo.GetAllSessionWithTrainerAndCategory();
@@ -61,5 +94,24 @@ namespace GymSystemBLL.Services.Clasess
             return MappedSession;
 
         }
+
+        #region Helper
+
+        private bool IsTrainerExist(int trainerId)
+        {
+            var trainer = _unitOfWork.GetRepo<Trainer>().GetById(trainerId);
+            return trainer != null;
+        }
+        private bool IsCategoryExist(int categoryId)
+        {
+            var category = _unitOfWork.GetRepo<Category>().GetById(categoryId);
+            return category != null;
+        }
+
+        private bool IsDateValid(DateTime startDate, DateTime endDate)
+        {
+            return startDate < endDate ;
+        }
+        #endregion
     }
 }

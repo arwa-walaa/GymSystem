@@ -23,7 +23,9 @@ namespace GymSystemBLL
                 opt => opt.MapFrom(src => src.SessionTrainer.Name))
                 .ForMember(dest => dest.AvailableSlot,
                 opt => opt.Ignore());
-              
+
+            CreateMap<GymSystemBLL.ViewModels.SessionsViewModel.CreateSessionViewModel, GymSystemDAL.Entities.Session>();
+
         }
     }
 }
