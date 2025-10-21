@@ -28,6 +28,7 @@ namespace GymSystemPL
             builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.IUnitOfWork, GymSystemDAL.Repositroies.Classes.UnitOfWork>();
             builder.Services.AddScoped<GymSystemDAL.Repositroies.Interfaces.ISessionRepo, GymSystemDAL.Repositroies.Classes.SessionRepo>();
             builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfiles()));
+            builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IMemberService, GymSystemBLL.Services.Clasess.MemberService>();
             #endregion
 
             var app = builder.Build();

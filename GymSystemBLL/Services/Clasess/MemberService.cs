@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemBLL.Services.Clasess
 {
-    internal class MemberService : Interfaces.IMemberService
+    public class MemberService : Interfaces.IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -64,33 +64,12 @@ namespace GymSystemBLL.Services.Clasess
 
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
-
-            //first way of mapping 
-            //    var members = _memberRepo.GetAll() ?? [];
-            //    if (members is null || members.Any())
-            //    {
-            //        return [];
-            //    }
-            //    var memberViewModels = new List<MemberViewModel>();
-            //    foreach (var member in members)
-            //    {
-            //        var memberViewModel = new MemberViewModel()
-            //        {
-            //            Id = member.Id,
-            //            Name = member.Name,
-            //            Phone = member.Phone,
-            //            Email = member.Email,
-            //            Gender= member.Gender.ToString(),
-            //        };
-            //        memberViewModels.Add(memberViewModel);
-            //    }
-            //    return memberViewModels;
-
             var members = _unitOfWork.GetRepo<Member>().GetAll() ?? [];
-            if (members is null || members.Any())
+            if (members is null || !members.Any())
             {
                 return [];
             }
+            
             var memberViewModels = members.Select(member => new MemberViewModel
             {
                 Id = member.Id,
@@ -99,8 +78,8 @@ namespace GymSystemBLL.Services.Clasess
                 Email = member.Email,
                 Gender = member.Gender.ToString(),
                 Photo = member.Photo
-
             });
+            
             return memberViewModels;
         }
 

@@ -8,6 +8,11 @@ namespace GymSystemDAL.Entities
 {
     public class Session : BaseEntity
     {
+        public Session()
+        {
+            SessionMembers = new List<MemberSession>();
+        }
+
         public string Description { get; set; } = null!;
         public int Capacity { get; set; }
         public DateTime StratDate { get; set; }

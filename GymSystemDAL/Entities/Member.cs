@@ -8,7 +8,13 @@ namespace GymSystemDAL.Entities
 {
     public class Member : GymUser
     {
-      public string? Photo { get; set; }
+        public Member()
+        {
+            Memberships = new List<Membership>();
+            MemberSessions = new List<MemberSession>();
+        }
+
+        public string? Photo { get; set; }
 
         #region 1:1 RS Between Member HealthRecord
 

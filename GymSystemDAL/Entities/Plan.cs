@@ -8,6 +8,10 @@ namespace GymSystemDAL.Entities
 {
     public class Plan : BaseEntity
     {
+        public Plan()
+        {
+            Plans = new List<Membership>();
+        }
 
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;

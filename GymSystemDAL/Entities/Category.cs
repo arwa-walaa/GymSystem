@@ -8,6 +8,11 @@ namespace GymSystemDAL.Entities
 {
     public class Category : BaseEntity
     {
+        public Category()
+        {
+            Sessions = new List<Session>();
+        }
+
         public string CategoryName { get; set; } = null!;
 
         #region 1:M RS Between SessionCategory

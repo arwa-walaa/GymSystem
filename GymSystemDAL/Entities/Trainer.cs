@@ -9,6 +9,10 @@ namespace GymSystemDAL.Entities
 {
     public class Trainer : GymUser
     {
+        public Trainer()
+        {
+            TrainerSessions = new List<Session>();
+        }
       
         public Specialist Specialites { get; set; }
 

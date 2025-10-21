@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GymSystemDAL.Data.Migrations
+namespace GymSystemDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialCreate : Migration
+    public partial class IntialCreate1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,7 +51,7 @@ namespace GymSystemDAL.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Members", x => x.Id);
-                    table.CheckConstraint("GymUserValidEmailCheck", "Email Like '_%@_%._&' ");
+                    table.CheckConstraint("GymUserValidEmailCheck", "Email Like '_%@_%._%' ");
                     table.CheckConstraint("GymUserValidPhoneCheck", "Phone Like '01%' and Phone Not Like '%[^0-9]%' ");
                 });
 
@@ -96,7 +96,7 @@ namespace GymSystemDAL.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trainers", x => x.Id);
-                    table.CheckConstraint("GymUserValidEmailCheck1", "Email Like '_%@_%._&' ");
+                    table.CheckConstraint("GymUserValidEmailCheck1", "Email Like '_%@_%._%' ");
                     table.CheckConstraint("GymUserValidPhoneCheck1", "Phone Like '01%' and Phone Not Like '%[^0-9]%' ");
                 });
 
