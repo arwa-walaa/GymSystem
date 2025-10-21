@@ -12,10 +12,26 @@ namespace GymSystemPL.Controllers
             _memberService = memberService;
         }
         //register for the service in program.cs
+        #region Get All Members
         public IActionResult Index()
         {
             var members = _memberService.GetAllMembers();
             return View(members);
         }
+
+        #endregion
+
+        #region Get member details 
+        public ActionResult MemberDetials(int id)
+        {
+            if (id <= 0) return RedirectToAction(nameof(Index));
+            var memberDetails = _memberService.GetMemberDetails(id);
+            if(memberDetails==null)
+                return RedirectToAction(nameof(Index));
+            return View(memberDetails);
+
+
+        }
+        #endregion
     }
 }
