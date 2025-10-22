@@ -1,4 +1,5 @@
-﻿using GymSystemBLL.Services.Interfaces;
+﻿using AutoMapper.Execution;
+using GymSystemBLL.Services.Interfaces;
 using GymSystemBLL.ViewModels;
 using GymSystemDAL.Entities;
 using GymSystemDAL.Repositroies.Interfaces;
@@ -113,7 +114,14 @@ namespace GymSystemBLL.Services.Clasess
             var Repo = _unitOfWork.GetRepo<Trainer>();
             var TrainerToUpdate = Repo.GetById(trainerId);
 
-            if (TrainerToUpdate is null || IsEmailExist(updatedTrainer.Email) || IsPhoneExist(updatedTrainer.Phone)) return false;
+            //if (TrainerToUpdate is null || IsEmailExist(updatedTrainer.Email) || IsPhoneExist(updatedTrainer.Phone)) return false;
+
+            var emailExists = _unitOfWork.GetRepo<Trainer>().GetAll(m => m.Email == updatedTrainer.Email && m.Id != trainerId).Any();
+            var phoneExists = _unitOfWork.GetRepo<Trainer>().GetAll(m => m.Phone == updatedTrainer.Phone && m.Id != trainerId).Any();
+            if (emailExists || phoneExists)
+            {
+                return false;
+            }
 
             TrainerToUpdate.Email = updatedTrainer.Email;
             TrainerToUpdate.Phone = updatedTrainer.Phone;

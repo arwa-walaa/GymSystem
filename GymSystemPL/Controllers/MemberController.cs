@@ -85,6 +85,44 @@ namespace GymSystemPL.Controllers
             }
         }
 
+        public ActionResult MemberEdit(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var memberToUpdate = _memberService.GetMemberForUpdate(id);
+            if (memberToUpdate == null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(memberToUpdate);
+
+        }
+        [HttpPost]
+        public ActionResult MemberEdit([FromRoute]int id, MamberToUpdateViewModel mamberToUpdate)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("Date invalied", "Check data And Missng Fields.");
+                return View(  mamberToUpdate);
+            }
+            bool result = _memberService.UpdateMemberDetails(id, mamberToUpdate);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Member updated successfully.";
+                //return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to update member.";
+                //return RedirectToAction(nameof(MemberEdit), new { id = id });
+            }
+            return RedirectToAction(nameof(Index));
+
+        }
 
     }
 }

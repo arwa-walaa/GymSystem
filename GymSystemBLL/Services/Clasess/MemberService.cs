@@ -143,7 +143,11 @@ namespace GymSystemBLL.Services.Clasess
             try
             {
                 var memberRepo= _unitOfWork.GetRepo<Member>();
-                if (IsEmailExist(mamberToUpdateViewModel.Email) || IsPhoneExist(mamberToUpdateViewModel.Phone))
+                //if (IsEmailExist(mamberToUpdateViewModel.Email) || IsPhoneExist(mamberToUpdateViewModel.Phone))
+
+               var emailExists=_unitOfWork.GetRepo<Member>().GetAll(m => m.Email == mamberToUpdateViewModel.Email && m.Id != memberId).Any();
+                var phoneExists=_unitOfWork.GetRepo<Member>().GetAll(m => m.Phone == mamberToUpdateViewModel.Phone && m.Id != memberId).Any();
+                if (emailExists || phoneExists)
                 {
                     return false;
                 }
