@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GymSystemBLL.Services.Interfaces;
+using GymSystemBLL.ViewModels;
 namespace GymSystemPL.Controllers
 {
     public class MemberController : Controller
@@ -58,6 +59,32 @@ namespace GymSystemPL.Controllers
 
 
         }
+        public ActionResult Create()
+        {
+               return View();
+        }
+        [HttpPost]
+        public ActionResult Store(CreateMemberViewModel createMember)
+        {
+            if (!ModelState.IsValid) { 
+                ModelState.AddModelError("Date invalied", "Check data And Missng Fields.");
+               
+                return View(nameof(Create), createMember);
+            }
+
+            bool result= _memberService.CreateMember(createMember);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Member created successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to create member. Email or Phone may already exist.";
+                return RedirectToAction(nameof(Create));
+            }
+        }
+
 
     }
 }
