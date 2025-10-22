@@ -197,7 +197,12 @@ namespace GymSystemBLL.Services.Clasess
             var _membershipRepo = _unitOfWork.GetRepo<Membership>();
             var memeber = _memberRepo.GetById(id);
             if (memeber is null) return false;
-            var HasActiveMemberSession = _memberSessionRepo.GetAll(m=>m.MemberId == id && m.Session.StratDate> DateTime.Now ).Any();
+            //var HasActiveMemberSession = _memberSessionRepo.GetAll(m=>m.MemberId == id && m.Session.StratDate> DateTime.Now ).Any();
+            //get all sessions id
+            var sessionIds = _unitOfWork.GetRepo<MemberSession>().
+                GetAll(X=>X.MemberId== id).Select(X=>X.SessionId);
+            var HasActiveMemberSession= _unitOfWork.GetRepo<Session>().
+                GetAll(X=> sessionIds.Contains(X.Id) && X.StratDate > DateTime.Now).Any();
             if (HasActiveMemberSession) return false;
             var Membership = _membershipRepo.GetAll(m => m.MemberId == id);
             //remove

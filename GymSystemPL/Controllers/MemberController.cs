@@ -123,6 +123,45 @@ namespace GymSystemPL.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+            }
 
+
+            var member = _memberService.GetMemberDetails(id);
+            if (member == null)
+            {
+                TempData["ErrorMessage"] = "member not found";
+                return RedirectToAction(nameof(Index));
+
+            }
+            ViewBag.MemberName = member.Name;
+            ViewBag.MemberId = member.Id;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteConfirmed([FromForm]int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Member Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            bool result = _memberService.DeleteMember(id);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Member deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete member.";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        }
     }
-}
