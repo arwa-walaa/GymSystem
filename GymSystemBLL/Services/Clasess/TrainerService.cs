@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemBLL.Services.Clasess
 {
-    internal class TrainerService : Interfaces.ITrainerService
+    public class TrainerService : Interfaces.ITrainerService
     {
 
         private readonly IUnitOfWork _unitOfWork;
@@ -56,7 +56,7 @@ namespace GymSystemBLL.Services.Clasess
         public IEnumerable<TrainerViewModel> GetAllTrainers()
         {
             var Trainers = _unitOfWork.GetRepo<Trainer>().GetAll();
-            if (Trainers is null || Trainers.Any()) return [];
+            if (Trainers is null || !Trainers.Any()) return [];
 
             return Trainers.Select(X => new TrainerViewModel()
             {
@@ -76,6 +76,7 @@ namespace GymSystemBLL.Services.Clasess
 
             return new TrainerViewModel
             {
+                Id = Trainer.Id,
                 Email = Trainer.Email,
                 Name = Trainer.Name,
                 Phone = Trainer.Phone,

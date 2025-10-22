@@ -22,10 +22,10 @@ namespace GymSystemBLL.ViewModels
         [StringLength(100, MinimumLength = 5, ErrorMessage = "Email Must be between 5 and 100 characters.")]
         public string Email { get; set; } = null!;
 
-        [Required(ErrorMessage = "Phone is required!")]
-        [EmailAddress(ErrorMessage = "Invalid Phone Foramt")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Phone is required")]
+        [Phone(ErrorMessage = "Invalid Phone Format")]
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^(010|011|012|015)\d{8}$", ErrorMessage = "You Must Enter Egyption Number Foramt")]
+        [RegularExpression(@"(010|011|012|015)\d{8}$", ErrorMessage = "Phone Must Be Valid Egyptian Number  !")]
         public string? Phone { get; set; } = null!;
 
         [DataType(DataType.Date)]
