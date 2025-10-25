@@ -126,6 +126,48 @@ namespace GymSystemPL.Controllers
             TempData["SuccessMessage"] = "Session updated successfully.";
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session Id.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var session = _sessionService.GetSessionByID(id);
+            if (session == null)
+            {
+                TempData["ErrorMessage"] = "Session not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+         
+
+            ViewBag.SessionId = id;
+            return View(session);
+        }
+
+        [HttpPost]
+        [ActionName("DeleteConfirmed")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Session Id.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var result = _sessionService.RemoveSession(id);
+            if (!result)
+            {
+                TempData["ErrorMessage"] = "Failed to delete session. It may have active bookings or cannot be deleted at this time.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["SuccessMessage"] = "Session deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
         private void PopulateDropdownsForCategory()
         {
             var categories = _sessionService.GetCategoryForSesstions();

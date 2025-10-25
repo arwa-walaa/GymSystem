@@ -21,5 +21,7 @@ namespace GymSystemBLL.Services.Interfaces
         IEnumerable<TrainerSelectViewModel> GetTrainerForSesstions();
 
          IEnumerable<CategorySelectViewModel> GetCategoryForSesstions();
+
+        bool CanDeleteSession(int sessionId);
     }
 }

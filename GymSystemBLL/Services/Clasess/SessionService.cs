@@ -164,6 +164,13 @@ namespace GymSystemBLL.Services.Clasess
 
         }
 
+        public bool CanDeleteSession(int sessionId)
+        {
+            var session = _unitOfWork.SessionRepo.GetById(sessionId);
+            if (session == null) return false;
+            return IsSessionAvailableForDelete(session);
+        }
+
         private int IEnumerable<T>(IEnumerable<Category> categories)
         {
             throw new NotImplementedException();
@@ -202,7 +209,7 @@ namespace GymSystemBLL.Services.Clasess
             if (session is null) return false;
             var hasActiveBookings = _unitOfWork.SessionRepo.GetCountOfBookedSlots(session.Id) > 0;
             //if session completed or started or has active bookings
-            if ((session.EndDate < DateTime.Now && session.StratDate > DateTime.Now) || session.StratDate > DateTime.Now || session.EndDate < DateTime.Now || hasActiveBookings) return false;
+            if ((session.EndDate < DateTime.Now && session.StratDate > DateTime.Now) || session.StratDate > DateTime.Now || hasActiveBookings) return false;
             return true;
 
 
