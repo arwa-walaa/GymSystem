@@ -69,6 +69,23 @@ namespace GymSystemPL.Controllers
             TempData["SuccessMessage"] = "Plan updated successfully.";
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public ActionResult Activate(int id) {
+        
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Plan Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var toggled = _planService.ToggleStatus(id);
+            if (!toggled)
+            {
+                TempData["ErrorMessage"] = "Failed to toggle the plan status.";
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["SuccessMessage"] = "Plan status toggled successfully.";
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
