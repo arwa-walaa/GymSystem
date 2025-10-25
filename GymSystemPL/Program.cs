@@ -31,6 +31,8 @@ namespace GymSystemPL
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IMemberService, GymSystemBLL.Services.Clasess.MemberService>();
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.ITrainerService, GymSystemBLL.Services.Clasess.TrainerService>();
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IAnaliticsService, GymSystemBLL.Services.Clasess.AnaliticsService>();
+            builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IPlanService, GymSystemBLL.Services.Clasess.PlanService>();
+
             #endregion
 
             var app = builder.Build();
@@ -68,7 +70,7 @@ namespace GymSystemPL
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
-            app.Run();
+             app.Run();
         }
     }
 }
