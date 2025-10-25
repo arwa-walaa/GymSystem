@@ -26,6 +26,13 @@ namespace GymSystemBLL
 
             CreateMap<GymSystemBLL.ViewModels.SessionsViewModel.CreateSessionViewModel, GymSystemDAL.Entities.Session>();
             CreateMap<GymSystemBLL.ViewModels.SessionsViewModel.UpdateSessionViewModel, GymSystemDAL.Entities.Session>().ReverseMap();
+            
+            // Trainer mapping
+            CreateMap<GymSystemDAL.Entities.Trainer, GymSystemBLL.ViewModels.SessionsViewModel.TrainerSelectViewModel>();
+            
+            // Category mapping
+            CreateMap<GymSystemDAL.Entities.Category, GymSystemBLL.ViewModels.SessionsViewModel.CategorySelectViewModel>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CategoryName)).ReverseMap();
 
 
 

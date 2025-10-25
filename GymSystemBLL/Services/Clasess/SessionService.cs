@@ -145,6 +145,29 @@ namespace GymSystemBLL.Services.Clasess
             }
 
         }
+
+
+        public IEnumerable<TrainerSelectViewModel> GetTrainerForSesstions()
+        {
+            
+            var trainers = _unitOfWork.GetRepo<Trainer>().GetAll();
+            if (!trainers.Any()) return [];
+            return _mapper.Map<IEnumerable<TrainerSelectViewModel>>(trainers);
+         
+        }
+
+        public IEnumerable<CategorySelectViewModel> GetCategoryForSesstions()
+        {
+            var categories = _unitOfWork.GetRepo<Category>().GetAll();
+            if (!categories.Any()) return [];
+          return  _mapper.Map<IEnumerable<CategorySelectViewModel>>(categories);
+
+        }
+
+        private int IEnumerable<T>(IEnumerable<Category> categories)
+        {
+            throw new NotImplementedException();
+        }
         #region Helper
 
         private bool IsTrainerExist(int trainerId)
@@ -184,6 +207,7 @@ namespace GymSystemBLL.Services.Clasess
 
 
         }
+
 
 
         #endregion
