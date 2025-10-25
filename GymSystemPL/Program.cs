@@ -30,6 +30,7 @@ namespace GymSystemPL
             builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfiles()));
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IMemberService, GymSystemBLL.Services.Clasess.MemberService>();
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.ITrainerService, GymSystemBLL.Services.Clasess.TrainerService>();
+            builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IAnaliticsService, GymSystemBLL.Services.Clasess.AnaliticsService>();
             #endregion
 
             var app = builder.Build();
