@@ -32,6 +32,7 @@ namespace GymSystemPL
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.ITrainerService, GymSystemBLL.Services.Clasess.TrainerService>();
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IAnaliticsService, GymSystemBLL.Services.Clasess.AnaliticsService>();
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IPlanService, GymSystemBLL.Services.Clasess.PlanService>();
+            builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.ISessionService, GymSystemBLL.Services.Clasess.SessionService>();
 
             #endregion
 
