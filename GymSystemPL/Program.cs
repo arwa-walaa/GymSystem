@@ -1,6 +1,9 @@
 using GymSystemBLL;
 using GymSystemBLL.Services.AttachmentService;
+using GymSystemDAL.Data.Context;
 using GymSystemDAL.Data.DataSeed;
+using GymSystemDAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymSystemPL
@@ -36,6 +39,22 @@ namespace GymSystemPL
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.ISessionService, GymSystemBLL.Services.Clasess.SessionService>();
             builder.Services.AddScoped< IAtachmentService, AtachmentService>();
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(Conf =>
+            {
+                
+                Conf.Password.RequiredLength = 6;
+                Conf.Password.RequireUppercase =true ;
+                Conf.Password.RequireLowercase = true;
+                Conf.User.RequireUniqueEmail = true;
+
+            }).AddEntityFrameworkStores<GymSystemDBContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
             #endregion
 
             var app = builder.Build();
@@ -51,6 +70,12 @@ namespace GymSystemPL
                 DbContext.Database.Migrate();
             }
             GymDBContextSeeding.SeedData(DbContext);
+
+
+            var RoleManager = Scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<Microsoft.AspNetCore.Identity.IdentityRole>>();
+            var UserManager = Scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<GymSystemDAL.Entities.ApplicationUser>>();
+            IdentityDBContextSeeding.SeedData(RoleManager, UserManager);
+
 
             #endregion
 
