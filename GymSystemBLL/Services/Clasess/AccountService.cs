@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GymSystemBLL.Services.Clasess
 {
-    internal class AccountService : IAccountService
+    public class AccountService : IAccountService
     {
         private readonly UserManager<ApplicationUser> _userManager;
 

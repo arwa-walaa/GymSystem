@@ -39,6 +39,8 @@ namespace GymSystemPL
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.ISessionService, GymSystemBLL.Services.Clasess.SessionService>();
             builder.Services.AddScoped< IAtachmentService, AtachmentService>();
 
+            builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IAccountService, GymSystemBLL.Services.Clasess.AccountService>();
+
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(Conf =>
             {
                 
@@ -89,13 +91,13 @@ namespace GymSystemPL
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Account}/{action=Login}/{id?}")
                 .WithStaticAssets();
 
              app.Run();
