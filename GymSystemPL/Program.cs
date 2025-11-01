@@ -1,4 +1,5 @@
 using GymSystemBLL;
+using GymSystemBLL.Services.AttachmentService;
 using GymSystemDAL.Data.DataSeed;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,7 @@ namespace GymSystemPL
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IAnaliticsService, GymSystemBLL.Services.Clasess.AnaliticsService>();
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.IPlanService, GymSystemBLL.Services.Clasess.PlanService>();
             builder.Services.AddScoped<GymSystemBLL.Services.Interfaces.ISessionService, GymSystemBLL.Services.Clasess.SessionService>();
+            builder.Services.AddScoped< IAtachmentService, AtachmentService>();
 
             #endregion
 

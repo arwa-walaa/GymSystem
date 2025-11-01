@@ -1,4 +1,5 @@
-﻿using GymSystemBLL.ViewModels;
+﻿using GymSystemBLL.Services.AttachmentService;
+using GymSystemBLL.ViewModels;
 using GymSystemDAL.Entities;
 using GymSystemDAL.Repositroies.Interfaces;
 using System;
@@ -12,10 +13,12 @@ namespace GymSystemBLL.Services.Clasess
     public class MemberService : Interfaces.IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAtachmentService _atachmentService;
 
-        public MemberService(IUnitOfWork unitOfWork )
+        public MemberService(IUnitOfWork unitOfWork , IAtachmentService atachmentService)
         {
            _unitOfWork = unitOfWork;
+           _atachmentService = atachmentService;
         }
         //don't forget to register Iunitofwork in service in program.cs
         public bool CreateMember(CreateMemberViewModel createMemberViewModel)
@@ -24,6 +27,13 @@ namespace GymSystemBLL.Services.Clasess
             try
             {
                 if (IsEmailExist(createMemberViewModel.Email) || IsPhoneExist(createMemberViewModel.Phone))
+                {
+                    return false;
+                }
+
+                var photoFileName = _atachmentService.Upload("Members", createMemberViewModel.Photo);
+
+                if (photoFileName is null)
                 {
                     return false;
                 }
@@ -52,8 +62,24 @@ namespace GymSystemBLL.Services.Clasess
 
                 };
 
+                member.Photo = photoFileName;
+
+
                 _unitOfWork.GetRepo<Member>().Add(member) ;
-                return _unitOfWork.SaveChanges() > 0;
+
+
+
+                var IsCreated= _unitOfWork.SaveChanges() > 0;
+                if(!IsCreated)
+                {
+                    _atachmentService.Delete(photoFileName, "Members");
+                    return false;
+                }
+                else
+                {
+                    return IsCreated;
+                }
+               
             }
             catch (Exception)
             {
@@ -220,7 +246,12 @@ namespace GymSystemBLL.Services.Clasess
                 }
              
                  _memberRepo.Delete(memeber);
-                return _unitOfWork.SaveChanges() > 0;
+                var IsDeleted= _unitOfWork.SaveChanges() > 0;
+                if (IsDeleted)
+                {                      //delete photo
+                    _atachmentService.Delete(memeber.Photo, "Members");
+                }
+                return IsDeleted;
 
 
             }
