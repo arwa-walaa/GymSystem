@@ -14,7 +14,7 @@ namespace GymSystemDAL.Entities
             MemberSessions = new List<MemberSession>();
         }
 
-        public string? Photo { get; set; }
+        public string Photo { get; set; } = null!;
 
         #region 1:1 RS Between Member HealthRecord
 
