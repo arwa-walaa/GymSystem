@@ -11,10 +11,10 @@ namespace GymSystemPL.Controllers
         private readonly IAccountService _accountService;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController( IAccountService accountService ,SignInManager<ApplicationUser> signInManager )
+        public AccountController(IAccountService accountService, SignInManager<ApplicationUser> signInManager)
         {
             _accountService = accountService;
-           _signInManager = signInManager;
+            _signInManager = signInManager;
         }
 
         //login
@@ -25,8 +25,9 @@ namespace GymSystemPL.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel loginViewModel) {
-        
+        public ActionResult Login(LoginViewModel loginViewModel)
+        {
+
             if (!ModelState.IsValid)
             {
                 //ModelState.AddModelError("InvalidModel", "Please correct the errors and try again.");
@@ -39,20 +40,20 @@ namespace GymSystemPL.Controllers
                 ModelState.AddModelError("InvalidCredentials", "The email or password you entered is incorrect.");
                 return View(loginViewModel);
             }
-            var result= _signInManager.PasswordSignInAsync(User, loginViewModel.Password, loginViewModel.RememberMe, false).Result;
-          
-           
+            var result = _signInManager.PasswordSignInAsync(User, loginViewModel.Password, loginViewModel.RememberMe, false).Result;
+
+
             if (result.IsNotAllowed)
             {
                 ModelState.AddModelError("SignInFailed", "Unable to sign in. Please try again later.");
                 return View(loginViewModel);
             }
-            if(result.IsLockedOut)
+            if (result.IsLockedOut)
             {
                 ModelState.AddModelError("AccountLocked", "Your account is locked. Please contact support.");
                 return View(loginViewModel);
             }
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -62,8 +63,20 @@ namespace GymSystemPL.Controllers
 
 
         //logout
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            _signInManager.SignOutAsync().GetAwaiter().GetResult();
+            return RedirectToAction("Login");
+        }
 
 
         //access denied
+  
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
     }
+       
 }
